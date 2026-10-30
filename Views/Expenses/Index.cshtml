@@ -1,0 +1,103 @@
+@model ExpenseIndexViewModel
+@{
+    ViewData["Title"] = "Expenses";
+    var f = Model.Filter;
+}
+
+<h1>Expenses</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Expense</a>
+</p>
+
+<form asp-action="Index" method="get" class="card card-body bg-light mb-3">
+    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+    <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+            <label for="CategoryId" class="form-label">Category</label>
+            <select id="CategoryId" name="CategoryId" asp-items="Model.Categories" class="form-select">
+                <option value="">All</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="PaymentMethod" class="form-label">Payment Method</label>
+            <select id="PaymentMethod" name="PaymentMethod" class="form-select">
+                <option value="">All</option>
+                @foreach (var method in Enum.GetValues<PaymentMethod>())
+                {
+                    <option value="@method" selected="@(f.PaymentMethod == method)">@method.GetDisplayName()</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="From" class="form-label">From</label>
+            <input id="From" name="From" type="date" value="@f.From?.ToString("yyyy-MM-dd")" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="To" class="form-label">To</label>
+            <input id="To" name="To" type="date" value="@f.To?.ToString("yyyy-MM-dd")" class="form-control" />
+        </div>
+        <div class="col-md-5">
+            <label for="Search" class="form-label">Search</label>
+            <input id="Search" name="Search" type="search" maxlength="100" value="@f.Search" placeholder="Title or notes" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="Sort" class="form-label">Sort by</label>
+            <select id="Sort" name="Sort" asp-items="Model.SortOptions" class="form-select"></select>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            @if (Model.IsFiltered)
+            {
+                <a asp-action="Index" class="btn btn-link">Clear filters</a>
+            }
+        </div>
+    </div>
+</form>
+
+@if (Model.Expenses.Count == 0)
+{
+    <p class="text-muted">No expenses found.</p>
+}
+else
+{
+    <p class="text-muted">
+        @Model.Expenses.Count expense(s), total <strong>@Model.Total.ToString("C")</strong>
+    </p>
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Payment Method</th>
+                <th class="text-end">Amount</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Expenses)
+            {
+                <tr>
+                    <td class="text-nowrap">@e.Date.ToString("d")</td>
+                    <td>@e.Title</td>
+                    <td>@e.Category?.Name</td>
+                    <td>@e.PaymentMethod.GetDisplayName()</td>
+                    <td class="text-end text-nowrap">@e.Amount.ToString("C")</td>
+                    <td class="text-nowrap text-end">
+                        <a asp-action="Edit" asp-route-id="@e.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@e.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@e.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4">Total</th>
+                <th class="text-end text-nowrap">@Model.Total.ToString("C")</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+}

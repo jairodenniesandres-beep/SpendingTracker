@@ -1,0 +1,13 @@
+@model Category
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<h1>Category Details</h1>
+<hr />
+<partial name="_CategoryDetails" model="Model" />
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-controller="Expenses" asp-action="Index" asp-route-CategoryId="@Model.Id" class="btn btn-outline-secondary">View expenses</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

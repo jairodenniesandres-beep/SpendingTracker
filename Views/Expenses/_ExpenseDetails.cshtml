@@ -1,0 +1,18 @@
+@model Expense
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Title)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Title)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Amount)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Amount)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Date)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Date)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CategoryId)</dt>
+    <dd class="col-sm-9">@Model.Category?.Name</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.PaymentMethod)</dt>
+    <dd class="col-sm-9">@Model.PaymentMethod.GetDisplayName()</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Notes)</dt>
+    <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Notes) ? "-" : Model.Notes)</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CreatedAt)</dt>
+    <dd class="col-sm-9">@Model.CreatedAt.ToLocalTime().ToString("g")</dd>
+</dl>

@@ -1,0 +1,10 @@
+@model Category
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Name)</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.MonthlyBudget)</dt>
+    <dd class="col-sm-9">@(Model.MonthlyBudget?.ToString("C") ?? "No budget")</dd>
+    <dt class="col-sm-3">Expenses</dt>
+    <dd class="col-sm-9">@ViewBag.ExpenseCount</dd>
+</dl>
